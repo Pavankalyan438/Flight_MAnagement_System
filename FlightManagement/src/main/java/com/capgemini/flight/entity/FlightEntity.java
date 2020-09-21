@@ -5,12 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="flights")
+@Entity //@Entity annotation specifies that the class is an entity and is mapped to a database table
+@Table(name="flights") //@Table annotation specifies the name of the database table to be used for mapping
 public class FlightEntity {
 	
-	@Id
-	@Column(name="flight_number", length=10)
+	@Id //@Id annotation specifies the primary key of an entity 
+	
+	@Column(name="flight_number", length=10) //@Column enables you to customize the columns
 	private long flightNumber;
 	@Column(name="flight_model", length=20)
 	private String flightMdel;
@@ -42,9 +43,13 @@ public class FlightEntity {
 	public void setSeatCapacity(int seatCapacity) {
 		this.seatCapacity = seatCapacity;
 	}
+	
+	//Default constructor
 	public FlightEntity() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	//Constructor with all the Fields and initialization
 	public FlightEntity(long flightNumber, String flightMdel, String carrierName, int seatCapacity) {
 		super();
 		this.flightNumber = flightNumber;
@@ -53,6 +58,7 @@ public class FlightEntity {
 		this.seatCapacity = seatCapacity;
 	}
 	@Override
+	//Overriding the Object class method in this class
 	public String toString() {
 		return "FlightEntity [flightNumber=" + flightNumber + ", flightMdel=" + flightMdel + ", carrierName="
 				+ carrierName + ", seatCapacity=" + seatCapacity + "]";

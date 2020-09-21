@@ -1,5 +1,6 @@
 package com.capgemini.flight.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,25 @@ public class FlightServiceClass implements FlightServiceInterface {
 	public String addFlight(FlightEntity flight) {
 		flightDAO.save(flight);
 		return "Flight Added into the DataBase Successfuly";
+	}
+
+	@Override
+	public FlightEntity updateFlight(FlightEntity flightEntity) {
+		
+		return flightDAO.save(flightEntity);
+	}
+
+	@Override
+	public String deleteFlight(Long flightNumber) {
+		// TODO Auto-generated method stub
+		flightDAO.deleteById(flightNumber);
+		return "Flight is DELETED SUCCESSFULLY !";
+	}
+
+	@Override
+	public List<FlightEntity> getAllFlights() {
+		return flightDAO.findAll();
+		 
 	}
 
 }
