@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.flight.entity.FlightEntity;
 import com.capgemini.flight.exceptions.FlightNotFoundException;
+import com.capgemini.flight.exceptions.ObjectNullException;
 import com.capgemini.flight.service.FlightServiceInterface;
 
 @RestController
@@ -28,11 +29,11 @@ public class FlightController {
 	@Autowired
 	FlightServiceInterface flightService;
 
-	@PostMapping("/addflight") // Mapping the url to add flight
+	@PostMapping("/addflight") // Mapping the URL to add flight
 	public ResponseEntity<String> addFlight(@RequestBody FlightEntity flight) {
 
 		if (flight.getCarrierName() == null) // Checking whether the received object is null
-			throw new NullPointerException("Object Cannot be Empty"); // If object is null throwing an Null pointer
+			throw new ObjectNullException("Object Cannot be Empty"); // If object is null throwing an Null pointer
 																		// Exception
 
 		// Checking whether this flight is already available in the database by
@@ -68,7 +69,7 @@ public class FlightController {
 	public String updateFlight(@RequestBody FlightEntity flightEntity) {
 		if (flightEntity == null) // Checking whether the object received is null
 
-			throw new NullPointerException("Object Cannot be NULL!");
+			throw new ObjectNullException("Object Cannot be NULL!");
 		Optional<FlightEntity> flight_check = flightService.searchFlight(flightEntity.getFlightNumber());
 		if (flight_check.isPresent()) { // checking whether values are present is received object
 			flightService.updateFlight(flightEntity);
