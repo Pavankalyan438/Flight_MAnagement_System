@@ -11,7 +11,7 @@ public interface FlightServiceInterface {
 
 	String addFlight(FlightEntity flight);
 
-	FlightEntity updateFlight(FlightEntity flightEntity);
+	void updateFlight(FlightEntity flightEntity);
 
 	String deleteFlight(Long flightNumber);
 

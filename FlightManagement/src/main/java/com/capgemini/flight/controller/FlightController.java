@@ -27,12 +27,13 @@ import com.capgemini.flight.service.FlightServiceInterface;
 public class FlightController {
 
 	@Autowired
-	FlightServiceInterface flightService;
+	private FlightServiceInterface flightService;
 
 	@PostMapping("/addflight") // Mapping the URL to add flight
 	public ResponseEntity<String> addFlight(@RequestBody FlightEntity flight) {
 
-		if (flight.getCarrierName() == null) // Checking whether the received object is null
+		if (flight.getCarrierName() == null || flight.getFlightMdel() == null || flight.getSeatCapacity() == 0
+				|| flight.getFlightNumber() == 0) // Checking whether the received object is null
 			throw new ObjectNullException("Object Cannot be Empty"); // If object is null throwing an Null pointer
 																		// Exception
 
@@ -50,8 +51,13 @@ public class FlightController {
 	}
 
 	@GetMapping("/searchflight/{flightNumber}") // Mapping the URL for Searching Flight
+
 	// @PathVariable is used to extract the variable from the URL
+
 	public Optional<FlightEntity> searchFlight(@PathVariable Long flightNumber) {
+		if (flightNumber == 0)
+			throw new ObjectNullException("Flight Number Cannot be 0 !");
+
 		Optional<FlightEntity> flightEntity = flightService.searchFlight(flightNumber);
 		if (flightEntity.isPresent()) {
 			return flightEntity;
@@ -66,21 +72,29 @@ public class FlightController {
 	@PutMapping("/updateflight") // Mapping the URL to update flight
 
 	// @RequestBody is used to get the object of the class from the URL
+
 	public String updateFlight(@RequestBody FlightEntity flightEntity) {
-		if (flightEntity == null) // Checking whether the object received is null
+		if (flightEntity.getCarrierName() == null || flightEntity.getFlightMdel() == null
+				|| flightEntity.getSeatCapacity() == 0 || flightEntity.getFlightNumber() == 0) // Checking whether the
+																								// object received is
+																								// null
 
 			throw new ObjectNullException("Object Cannot be NULL!");
 		Optional<FlightEntity> flight_check = flightService.searchFlight(flightEntity.getFlightNumber());
 		if (flight_check.isPresent()) { // checking whether values are present is received object
 			flightService.updateFlight(flightEntity);
-			return "Successfully Updated :) ";
+			return "Successfully UPDATED ! !";
 		}
 		return "Flight with " + flightEntity.getFlightNumber() + " is not AVAILABLE to update!!";
 
 	}
 
 	@DeleteMapping("/deleteflight/{flightNumber}") // Mapping the URL to delete the flight with flight number
+
 	public String deleteFlight(@PathVariable Long flightNumber) {
+		if (flightNumber == 0)
+			throw new ObjectNullException("Flight Number Cannot be 0 !");
+
 		// To delete first i am searching whether the flight is available in the
 		// database
 		Optional<FlightEntity> flightEntity = flightService.searchFlight(flightNumber);
@@ -100,9 +114,12 @@ public class FlightController {
 		if (all_flights.isEmpty()) { // Checking whether the list is Empty
 
 			// Throwing exception if the object is empty
+
 			throw new FlightNotFoundException("Flight Not found");
 		}
+
 		// Else returning the List of available flights with HtttpStatus
+
 		return new ResponseEntity<List<FlightEntity>>(all_flights, HttpStatus.OK);
 
 	}
