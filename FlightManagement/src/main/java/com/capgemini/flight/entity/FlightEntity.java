@@ -19,6 +19,10 @@ public class FlightEntity {
 	private String carrierName;
 	@Column(name="seat_capacity", length=10)
 	private int seatCapacity;
+	
+	/**
+	 *Public getter and setter for the private variables declared
+	 */
 	public long getFlightNumber() {
 		return flightNumber;
 	}

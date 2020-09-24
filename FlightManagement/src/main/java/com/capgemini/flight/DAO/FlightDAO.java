@@ -7,7 +7,9 @@ import com.capgemini.flight.entity.FlightEntity;
 
 @Repository // @Repository is a marker annotation, which indicates that the underlying
 			// interface is a repository
-
-public interface FlightDAO extends JpaRepository<FlightEntity, Long> { // JpaRepository contains methods for performing
-																		// CRUD operations
+/**
+ * JpaRepository contains methods for performing CRUD operations
+ */
+public interface FlightDAO extends JpaRepository<FlightEntity, Long> { 
+	
 }

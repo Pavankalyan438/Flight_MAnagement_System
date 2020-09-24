@@ -30,30 +30,51 @@ public class FlightController {
 	private FlightServiceInterface flightService;
 
 	@PostMapping("/addflight") // Mapping the URL to add flight
+	/**
+	 * This method used to add the new flight into the database
+	 * 
+	 * @param flight
+	 * @return String telling that adding is successful
+	 */
+
 	public ResponseEntity<String> addFlight(@RequestBody FlightEntity flight) {
+		/**
+		 * Checking whether any variable in the object is null
+		 */
 
 		if (flight.getCarrierName() == null || flight.getFlightMdel() == null || flight.getSeatCapacity() == 0
-				|| flight.getFlightNumber() == 0) // Checking whether the received object is null
+				|| flight.getFlightNumber() == 0)
+
 			throw new ObjectNullException("Object Cannot be Empty"); // If object is null throwing an Null pointer
 																		// Exception
 
-		// Checking whether this flight is already available in the database by
-		// seaechFlight() method
+		/**
+		 * Checking whether this flight is already available in the database by
+		 * seaechFlight() method
+		 */
+
 		Optional<FlightEntity> flightEntity = flightService.searchFlight(flight.getFlightNumber());
 		if (flightEntity.isPresent())
 			return new ResponseEntity<String>("Flight with " + flight.getFlightNumber() + " number is already added",
-					HttpStatus.ALREADY_REPORTED);
-		// Adding the flight into the Database
+					HttpStatus.OK);
+		/**
+		 * Adding the flight into the Database and Returning the ResponseEntity<String>
+		 * with Httpstatus and message
+		 */
 		String msg = flightService.addFlight(flight);
-		// Returning the ResponseEntity<String> with Httpstatus and message
+
 		return new ResponseEntity<String>(msg, HttpStatus.OK);
 
 	}
 
 	@GetMapping("/searchflight/{flightNumber}") // Mapping the URL for Searching Flight
 
-	// @PathVariable is used to extract the variable from the URL
-
+	/**
+	 * @PathVariable is used to extract the variable from the URL This method
+	 *               searches for the flight with particular flight number
+	 * @param flightNumber
+	 * @return FlightEntity object if avilable else throws an exception
+	 */
 	public Optional<FlightEntity> searchFlight(@PathVariable Long flightNumber) {
 		if (flightNumber == 0)
 			throw new ObjectNullException("Flight Number Cannot be 0 !");
@@ -63,62 +84,85 @@ public class FlightController {
 			return flightEntity;
 		}
 
-		throw new FlightNotFoundException("Flight with " + flightNumber + " Flight Number is NOT AVAILABLE !!!"); // Throwing
-																													// exception
-																													// available
+		throw new FlightNotFoundException("Flight with " + flightNumber + " Flight Number is NOT AVAILABLE !!!");
 
 	}
 
 	@PutMapping("/updateflight") // Mapping the URL to update flight
-
-	// @RequestBody is used to get the object of the class from the URL
+	/**
+	 * @RequestBody is used to get the object of the class from the URL Method is
+	 *              used to update the flight, initially checks whether the object
+	 *              is null
+	 * @param flightEntity
+	 * @return String that update is successful
+	 */
 
 	public String updateFlight(@RequestBody FlightEntity flightEntity) {
 		if (flightEntity.getCarrierName() == null || flightEntity.getFlightMdel() == null
-				|| flightEntity.getSeatCapacity() == 0 || flightEntity.getFlightNumber() == 0) // Checking whether the
-																								// object received is
-																								// null
-
+				|| flightEntity.getSeatCapacity() == 0 || flightEntity.getFlightNumber() == 0)
 			throw new ObjectNullException("Object Cannot be NULL!");
 		Optional<FlightEntity> flight_check = flightService.searchFlight(flightEntity.getFlightNumber());
-		if (flight_check.isPresent()) { // checking whether values are present is received object
+		if (flight_check.isPresent()) {
+
+			/**
+			 * checking whether values are present is received object and updates with the
+			 * new object
+			 */
+
 			flightService.updateFlight(flightEntity);
 			return "Successfully UPDATED ! !";
 		}
+		/**
+		 * Else return that flight is not available to update
+		 */
 		return "Flight with " + flightEntity.getFlightNumber() + " is not AVAILABLE to update!!";
 
 	}
 
 	@DeleteMapping("/deleteflight/{flightNumber}") // Mapping the URL to delete the flight with flight number
 
+	/**
+	 * This method used to delete the flight with particular flight number
+	 * 
+	 * @param flightNumber
+	 * @return String that flight is deleted successfully else throws an
+	 *         FlightNotFoundException
+	 */
+
 	public String deleteFlight(@PathVariable Long flightNumber) {
 		if (flightNumber == 0)
 			throw new ObjectNullException("Flight Number Cannot be 0 !");
 
-		// To delete first i am searching whether the flight is available in the
-		// database
+		/**
+		 * To delete first i am searching whether the flight is available in the
+		 * database
+		 * 
+		 */
+
 		Optional<FlightEntity> flightEntity = flightService.searchFlight(flightNumber);
 		if (flightEntity.isPresent()) {
-			// deleting the flight with particular flight number
-			return flightService.deleteFlight(flightNumber);
+
+			return flightService.deleteFlight(flightNumber); // deleting the flight with particular flight number
 
 		}
-		// throwing exception if flight is not available
+
 		throw new FlightNotFoundException("Flight with " + flightNumber + " Flight Number is NOT AVAILABLE !!!");
 
 	}
 
 	@GetMapping("/allflights") // Mapping the URL to get all the flights available
+	/**
+	 * This method used to get all the flights that are available
+	 * 
+	 * @return List of FlightEntity objects
+	 */
+
 	public ResponseEntity<List<FlightEntity>> viewAllFlights() {
 		List<FlightEntity> all_flights = flightService.getAllFlights();
 		if (all_flights.isEmpty()) { // Checking whether the list is Empty
 
-			// Throwing exception if the object is empty
-
-			throw new FlightNotFoundException("Flight Not found");
+			throw new FlightNotFoundException("Flight Not found"); // Throwing exception if the object is empty
 		}
-
-		// Else returning the List of available flights with HtttpStatus
 
 		return new ResponseEntity<List<FlightEntity>>(all_flights, HttpStatus.OK);
 
