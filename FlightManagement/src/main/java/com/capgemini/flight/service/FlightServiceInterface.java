@@ -9,13 +9,13 @@ import com.capgemini.flight.entity.FlightEntity;
  */
 public interface FlightServiceInterface {
 
-	Optional<FlightEntity> searchFlight(long flightNumber);
+	Optional<FlightEntity> searchFlight(int flightNumber);
 
 	String addFlight(FlightEntity flight);
 
 	void updateFlight(FlightEntity flightEntity);
 
-	String deleteFlight(Long flightNumber);
+	String deleteFlight(int flightNumber);
 
 	List<FlightEntity> getAllFlights();
 

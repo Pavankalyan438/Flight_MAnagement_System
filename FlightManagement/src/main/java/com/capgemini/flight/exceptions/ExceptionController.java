@@ -22,4 +22,9 @@ public class ExceptionController {
 	public ResponseEntity<Object> exception(ObjectNullException exception) {
 		return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler(value = NoDataFoundException.class)
+	public ResponseEntity<Object> exception(NoDataFoundException exception) {
+		return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+	}
 }

@@ -26,7 +26,7 @@ public class FlightServiceClass implements FlightServiceInterface {
 	/**
 	 * seaching a flight with findById(Long l) method  and returning the object
 	 */
-	public Optional<FlightEntity> searchFlight(long flightNumber) {
+	public Optional<FlightEntity> searchFlight(int flightNumber) {
 
 		return flightDAO.findById(flightNumber);
 
@@ -58,7 +58,7 @@ public class FlightServiceClass implements FlightServiceInterface {
 	/**
 	 * deleting the flight with deleteById(Long l) method and returning the string
 	 */
-	public String deleteFlight(Long flightNumber) {
+	public String deleteFlight(int flightNumber) {
 		// TODO Auto-generated method stub
 		flightDAO.deleteById(flightNumber);
 		return "Flight is DELETED SUCCESSFULLY !";

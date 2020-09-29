@@ -10,6 +10,6 @@ import com.capgemini.flight.entity.FlightEntity;
 /**
  * JpaRepository contains methods for performing CRUD operations
  */
-public interface FlightDAO extends JpaRepository<FlightEntity, Long> { 
+public interface FlightDAO extends JpaRepository<FlightEntity, Integer> { 
 	
 }

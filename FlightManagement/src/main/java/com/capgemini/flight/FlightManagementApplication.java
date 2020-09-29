@@ -3,8 +3,7 @@ package com.capgemini.flight;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication // @SpringBootApplication annotation is used to triggers auto-configuration and
-						// component scanning
+@SpringBootApplication 
 public class FlightManagementApplication {
 
 	public static void main(String[] args) {

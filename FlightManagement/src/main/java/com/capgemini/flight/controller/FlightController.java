@@ -23,13 +23,13 @@ import com.capgemini.flight.service.FlightServiceInterface;
 
 @RestController
 @RequestMapping("/flight")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 public class FlightController {
 
 	@Autowired
 	private FlightServiceInterface flightService;
 
-	@PostMapping("/addflight") // Mapping the URL to add flight
+	@PostMapping("/addflight") 
 	/**
 	 * This method used to add the new flight into the database
 	 * 
@@ -45,29 +45,24 @@ public class FlightController {
 		if (flight.getCarrierName() == null || flight.getFlightMdel() == null || flight.getSeatCapacity() == 0
 				|| flight.getFlightNumber() == 0)
 
-			throw new ObjectNullException("Object Cannot be Empty"); // If object is null throwing an Null pointer
-																		// Exception
+			throw new ObjectNullException("Object Cannot be Empty"); 
 
 		/**
 		 * Checking whether this flight is already available in the database by
-		 * seaechFlight() method
+		 * seaechFlight() method,if not we are adding into the database
 		 */
 
 		Optional<FlightEntity> flightEntity = flightService.searchFlight(flight.getFlightNumber());
 		if (flightEntity.isPresent())
 			return new ResponseEntity<String>("Flight with " + flight.getFlightNumber() + " number is already added",
 					HttpStatus.OK);
-		/**
-		 * Adding the flight into the Database and Returning the ResponseEntity<String>
-		 * with Httpstatus and message
-		 */
 		String msg = flightService.addFlight(flight);
 
 		return new ResponseEntity<String>(msg, HttpStatus.OK);
 
 	}
 
-	@GetMapping("/searchflight/{flightNumber}") // Mapping the URL for Searching Flight
+	@GetMapping("/searchflight/{flightNumber}") 
 
 	/**
 	 * @PathVariable is used to extract the variable from the URL This method
@@ -75,20 +70,23 @@ public class FlightController {
 	 * @param flightNumber
 	 * @return FlightEntity object if avilable else throws an exception
 	 */
-	public Optional<FlightEntity> searchFlight(@PathVariable Long flightNumber) {
+	public Optional<FlightEntity> searchFlight(@PathVariable int flightNumber) {
 		if (flightNumber == 0)
 			throw new ObjectNullException("Flight Number Cannot be 0 !");
 
 		Optional<FlightEntity> flightEntity = flightService.searchFlight(flightNumber);
-		if (flightEntity.isPresent()) {
-			return flightEntity;
+		return flightEntity;
+		/*if (flightEntity.isPresent()) {
+			return flightEntity.get();
 		}
-
+		else {
+			
 		throw new FlightNotFoundException("Flight with " + flightNumber + " Flight Number is NOT AVAILABLE !!!");
+		}*/
 
 	}
 
-	@PutMapping("/updateflight") // Mapping the URL to update flight
+	@PutMapping("/updateflight") 
 	/**
 	 * @RequestBody is used to get the object of the class from the URL Method is
 	 *              used to update the flight, initially checks whether the object
@@ -119,7 +117,7 @@ public class FlightController {
 
 	}
 
-	@DeleteMapping("/deleteflight/{flightNumber}") // Mapping the URL to delete the flight with flight number
+	@DeleteMapping("/deleteflight/{flightNumber}")
 
 	/**
 	 * This method used to delete the flight with particular flight number
@@ -129,7 +127,7 @@ public class FlightController {
 	 *         FlightNotFoundException
 	 */
 
-	public String deleteFlight(@PathVariable Long flightNumber) {
+	public String deleteFlight(@PathVariable int flightNumber) {
 		if (flightNumber == 0)
 			throw new ObjectNullException("Flight Number Cannot be 0 !");
 
@@ -150,7 +148,7 @@ public class FlightController {
 
 	}
 
-	@GetMapping("/allflights") // Mapping the URL to get all the flights available
+	@GetMapping("/allflights") 
 	/**
 	 * This method used to get all the flights that are available
 	 * 

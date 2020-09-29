@@ -48,11 +48,11 @@ public class FlightManagementApplicationTests {
 	@Test
 
 	 public void delete_FlightTest() {
-		String actual = flight_Service.deleteFlight((long) 12222);
+		String actual = flight_Service.deleteFlight(12222);
 		assertSame("Flight is DELETED SUCCESSFULLY !", actual);
 
 	}
-	@AfterAll
+	@Test
 	public void all_FlightsTest() {
 		List<FlightEntity> actual = flight_Service.getAllFlights();
 		assertNotEquals(7, actual.size());
