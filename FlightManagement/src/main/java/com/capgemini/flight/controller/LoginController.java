@@ -21,6 +21,11 @@ public class LoginController {
 	@Autowired
 	LoginServiceInterface service;
 	
+	/**
+	 * Method used to check whether the login details are correct or not
+	 * @param cust as the input
+	 * @return String 
+	 */
 	@PutMapping("/checkdetails")
 	public ResponseEntity<String> checkLoginDetails(@RequestBody Customer cust) {
 		if(cust!=null) {

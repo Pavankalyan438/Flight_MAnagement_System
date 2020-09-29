@@ -76,13 +76,7 @@ public class FlightController {
 
 		Optional<FlightEntity> flightEntity = flightService.searchFlight(flightNumber);
 		return flightEntity;
-		/*if (flightEntity.isPresent()) {
-			return flightEntity.get();
-		}
-		else {
-			
-		throw new FlightNotFoundException("Flight with " + flightNumber + " Flight Number is NOT AVAILABLE !!!");
-		}*/
+		
 
 	}
 
